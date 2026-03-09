@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GMC Product Optimisation — Preparation Guide</title>
+
+    <!-- Plus Jakarta Sans — Pastel Geometry preset font -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* =============================================
+           CSS THEME — Pastel Geometry (customised)
+           Sparro blue accent, soft sky background
+           ============================================= */
+        :root {
+            --bg-primary:    #cddce9;
+            --bg-slide2:     #d4e3ee;
+            --bg-slide3:     #bdd1e2;
+            --card-bg:       #faf9f7;
+            --text-primary:  #18202e;
+            --text-secondary:#596579;
+            --text-muted:    #8494a7;
+
+            --accent-blue:   #2795f0;
+            --accent-light:  #deeefb;
+            --accent-mint:   #8ecfbe;
+
+            --pill-1: #f0b4d4;
+            --pill-2: #a8d4c4;
+            --pill-3: #9b8dc4;
+            --pill-4: #f4c994;
+            --pill-5: #7fc8e0;
+
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+
+            /* Typography — all clamp() */
+            --title-size:  clamp(1.5rem, 4vw, 2.8rem);
+            --h2-size:     clamp(1.1rem, 2.6vw, 1.9rem);
+            --h3-size:     clamp(0.85rem, 1.6vw, 1.15rem);
+            --body-size:   clamp(0.7rem, 1.2vw, 0.93rem);
+            --small-size:  clamp(0.6rem, 0.9vw, 0.78rem);
+            --micro-size:  clamp(0.52rem, 0.75vw, 0.67rem);
+
+            /* Spacing */
+            --slide-padding: clamp(1.2rem, 3.5vw, 3.5rem);
+            --content-gap:   clamp(0.55rem, 1.5vw, 1.3rem);
+            --element-gap:   clamp(0.3rem, 0.7vw, 0.6rem);
+
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --radius-card: 16px;
+            --radius-sm:   10px;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--text-primary);
+            background: var(--bg-primary);
+        }
+
+        /* =============================================
+           VIEWPORT BASE — mandatory
+           ============================================= */
+        html, body { height: 100%; overflow-x: hidden; }
+
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-height: 100%;
+            overflow: hidden;
+            padding: var(--slide-padding);
+        }
+
+        /* Responsive breakpoints */
+        @media (max-height: 700px) {
+            :root {
+                --slide-padding: clamp(0.7rem, 2.5vw, 1.8rem);
+                --content-gap:   clamp(0.38rem, 1vw, 0.8rem);
+                --title-size:    clamp(1.15rem, 3.2vw, 2rem);
+                --h2-size:       clamp(0.95rem, 2.2vw, 1.45rem);
+                --h3-size:       clamp(0.76rem, 1.4vw, 0.98rem);
+            }
+        }
+
+        @media (max-height: 600px) {
+            :root {
+                --slide-padding: clamp(0.5rem, 2vw, 1.2rem);
+                --content-gap:   clamp(0.28rem, 0.8vw, 0.55rem);
+            }
+            .nav-dots, .decorative { display: none; }
+        }
+
+        @media (max-height: 500px) {
+            :root {
+                --slide-padding: clamp(0.4rem, 1.8vw, 0.9rem);
+                --title-size:    clamp(0.95rem, 2.8vw, 1.4rem);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .steps-row        { grid-template-columns: 1fr !important; }
+            .slide-2-grid     { grid-template-columns: 1fr !important; }
+            .slide-3-grid     { grid-template-columns: 1fr !important; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.2s !important;
+            }
+            html { scroll-behavior: auto; }
+        }
+
+        /* =============================================
+           ANIMATIONS
+           ============================================= */
+        .reveal {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.52s var(--ease-out-expo),
+                        transform 0.52s var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal       { opacity: 1; transform: translateY(0); }
+        .reveal:nth-child(1) { transition-delay: 0.04s; }
+        .reveal:nth-child(2) { transition-delay: 0.13s; }
+        .reveal:nth-child(3) { transition-delay: 0.21s; }
+        .reveal:nth-child(4) { transition-delay: 0.29s; }
+        .reveal:nth-child(5) { transition-delay: 0.37s; }
+        .reveal:nth-child(6) { transition-delay: 0.45s; }
+
+        /* =============================================
+           PROGRESS BAR
+           ============================================= */
+        .progress-bar {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: var(--accent-blue); width: 0%;
+            z-index: 200; transition: width 0.35s ease;
+        }
+
+        /* =============================================
+           NAV DOTS
+           ============================================= */
+        .nav-dots {
+            position: fixed; right: clamp(12px, 2vw, 22px); top: 50%;
+            transform: translateY(-50%);
+            display: flex; flex-direction: column;
+            gap: clamp(7px, 1.2vh, 12px); z-index: 100;
+        }
+
+        .nav-dot {
+            width: clamp(7px, 1vw, 10px);
+            height: clamp(7px, 1vw, 10px);
+            border-radius: 50%;
+            background: rgba(255,255,255,0.35);
+            border: 2px solid rgba(255,255,255,0.65);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: var(--text-primary);
+            border-color: var(--text-primary);
+            transform: scale(1.25);
+        }
+
+        /* =============================================
+           DECORATIVE PILLS — Pastel Geometry signature
+           ============================================= */
+        .pill-stack {
+            position: absolute; right: 0; top: 50%;
+            transform: translateY(-50%);
+            display: flex; flex-direction: column;
+            gap: clamp(4px, 0.7vh, 8px);
+            align-items: flex-end; pointer-events: none;
+        }
+
+        .pill { border-radius: 100px 0 0 100px; width: clamp(10px, 1.5vw, 18px); }
+        .pill:nth-child(1) { height: clamp(28px, 5vh, 48px);   background: var(--pill-1); }
+        .pill:nth-child(2) { height: clamp(48px, 9vh, 80px);   background: var(--pill-2); }
+        .pill:nth-child(3) { height: clamp(70px, 13vh, 120px); background: var(--pill-3); }
+        .pill:nth-child(4) { height: clamp(48px, 9vh, 80px);   background: var(--pill-4); }
+        .pill:nth-child(5) { height: clamp(28px, 5vh, 48px);   background: var(--pill-5); }
+
+        /* =============================================
+           SHARED COMPONENTS
+           ============================================= */
+        .tag-badge {
+            background: rgba(255,255,255,0.75);
+            border: 1.5px solid rgba(39, 149, 240, 0.25);
+            color: var(--accent-blue);
+            font-size: var(--micro-size); font-weight: 700;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            padding: 0.3em 1em; border-radius: 100px;
+            display: inline-block;
+        }
+
+        .page-title {
+            font-size: var(--title-size); font-weight: 800;
+            color: var(--text-primary); text-align: center; line-height: 1.15;
+        }
+
+        .page-subtitle {
+            font-size: var(--body-size); color: var(--text-secondary);
+            text-align: center; line-height: 1.5;
+        }
+
+        /* Step link button (used in multiple slides) */
+        .step-link {
+            display: inline-flex; align-items: center; gap: 0.3em;
+            font-size: var(--small-size); font-weight: 700;
+            color: var(--accent-blue); background: var(--accent-light);
+            padding: 0.4em 0.9em; border-radius: 100px;
+            text-decoration: none; margin-top: 0.2em;
+            transition: background 0.2s, transform 0.15s;
+            width: fit-content;
+        }
+
+        .step-link:hover { background: #c0ddf6; transform: translateY(-1px); }
+
+        /* Panel card */
+        .panel {
+            background: var(--card-bg);
+            border-radius: var(--radius-card);
+            padding: clamp(0.8rem, 1.8vw, 1.3rem);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+
+        .panel-heading {
+            font-size: var(--h3-size); font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: clamp(0.3rem, 0.6vw, 0.5rem);
+        }
+
+        .panel-note {
+            font-size: var(--small-size); color: var(--text-secondary);
+            margin-bottom: clamp(0.35rem, 0.7vw, 0.6rem);
+            line-height: 1.4;
+        }
+
+        /* Bottom handoff note pill */
+        .handoff-note {
+            background: rgba(255,255,255,0.55);
+            border-radius: 100px;
+            padding: 0.4em 1.4em;
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        /* =============================================
+           SLIDE 1 — OVERVIEW (4 steps, 2×2 grid)
+           ============================================= */
+        .slide-1 { background: var(--bg-primary); }
+
+        .s1-inner {
+            display: flex; flex-direction: column;
+            align-items: center; gap: var(--content-gap);
+            max-width: min(92vw, 1080px); margin: 0 auto; width: 100%;
+        }
+
+        /* 2×2 step grid */
+        .steps-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(0.6rem, 1.5vw, 1.1rem);
+            width: 100%;
+        }
+
+        .step-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-card);
+            padding: clamp(0.75rem, 1.6vw, 1.2rem);
+            box-shadow: 0 4px 22px rgba(0,0,0,0.07);
+            display: flex; flex-direction: column;
+            gap: var(--element-gap);
+            position: relative; overflow: hidden;
+        }
+
+        .step-bg-num {
+            position: absolute; top: clamp(6px, 1.2vw, 12px); right: clamp(8px, 1.8vw, 16px);
+            font-size: clamp(1.8rem, 4vw, 3.5rem); font-weight: 800;
+            line-height: 1; pointer-events: none; user-select: none;
+        }
+
+        /* Ghost number colours per step */
+        .step-card:nth-child(1) .step-bg-num { color: var(--pill-1); opacity: 0.38; }
+        .step-card:nth-child(2) .step-bg-num { color: var(--pill-2); opacity: 0.38; }
+        .step-card:nth-child(3) .step-bg-num { color: var(--pill-3); opacity: 0.38; }
+        .step-card:nth-child(4) .step-bg-num { color: var(--pill-4); opacity: 0.38; }
+
+        .step-icon  { font-size: clamp(1.1rem, 2.2vw, 1.6rem); line-height: 1; }
+
+        .step-label {
+            font-size: var(--micro-size); font-weight: 700;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--accent-blue);
+        }
+
+        .step-title {
+            font-size: var(--h3-size); font-weight: 700;
+            color: var(--text-primary); line-height: 1.3;
+        }
+
+        .step-desc {
+            font-size: var(--small-size); color: var(--text-secondary);
+            line-height: 1.5; flex: 1;
+        }
+
+        /* =============================================
+           SLIDE 2 — BRAND ONBOARDING FORM
+           ============================================= */
+        .slide-2 { background: var(--bg-slide2); }
+
+        .s2-inner {
+            display: flex; flex-direction: column;
+            gap: var(--content-gap);
+            max-width: min(92vw, 1080px); margin: 0 auto; width: 100%;
+        }
+
+        .s2-header {
+            display: flex; flex-direction: column; gap: 0.2em;
+        }
+
+        .s2-title {
+            font-size: var(--h2-size); font-weight: 800;
+            color: var(--text-primary); line-height: 1.2;
+        }
+
+        .s2-subtitle { font-size: var(--body-size); color: var(--text-secondary); }
+
+        /* Open Form CTA button */
+        .form-cta {
+            display: inline-flex; align-items: center; gap: 0.5em;
+            background: var(--accent-blue); color: white;
+            font-size: var(--body-size); font-weight: 700;
+            padding: 0.6em 1.4em; border-radius: 100px;
+            text-decoration: none; width: fit-content;
+            transition: opacity 0.2s, transform 0.15s;
+            box-shadow: 0 4px 16px rgba(39,149,240,0.3);
+        }
+
+        .form-cta:hover { opacity: 0.88; transform: translateY(-2px); }
+
+        .slide-2-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(0.8rem, 1.8vw, 1.4rem);
+            align-items: start;
+        }
+
+        /* Form field list */
+        .field-list {
+            display: flex; flex-direction: column;
+            gap: clamp(0.3rem, 0.7vw, 0.55rem);
+        }
+
+        .field-row {
+            display: flex; align-items: flex-start; gap: 0.5em;
+            padding: 0.38em 0.6em;
+            border-radius: var(--radius-sm);
+            background: #f0f5fb;
+        }
+
+        .field-required { background: #e8f4fd; } /* blue-tinted for required fields */
+        .field-optional  { background: #f4f6f8; }
+
+        .field-icon { font-size: var(--small-size); flex-shrink: 0; margin-top: 0.1em; }
+
+        .field-name {
+            font-weight: 700; font-size: var(--small-size);
+            color: var(--text-primary); min-width: 38%;
+        }
+
+        .field-hint {
+            font-size: var(--small-size); color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Tips panel on right */
+        .tip-rows {
+            display: flex; flex-direction: column;
+            gap: clamp(0.32rem, 0.7vw, 0.55rem);
+        }
+
+        .tip-row {
+            display: flex; gap: 0.5em; align-items: flex-start;
+            padding: 0.45em 0.65em; border-radius: var(--radius-sm);
+        }
+
+        .tip-row.warn    { background: #fff6e0; }
+        .tip-row.info    { background: #deeefb; }
+        .tip-row.ok      { background: #e4f5ed; }
+        .tip-row.neutral { background: #f2f0fb; }
+
+        .tip-icon { font-size: clamp(0.85rem, 1.3vw, 0.98rem); flex-shrink: 0; margin-top: 0.05em; line-height: 1.2; }
+
+        .tip-body strong {
+            display: block; font-weight: 700; font-size: var(--small-size);
+            color: var(--text-primary); margin-bottom: 0.08em;
+        }
+
+        .tip-body span { font-size: var(--small-size); color: var(--text-secondary); line-height: 1.4; }
+
+        /* =============================================
+           SLIDE 3 — PRODUCT TEMPLATE GUIDE
+           ============================================= */
+        .slide-3 { background: var(--bg-slide3); }
+
+        .s3-inner {
+            display: flex; flex-direction: column;
+            gap: var(--content-gap);
+            max-width: min(92vw, 1080px); margin: 0 auto; width: 100%;
+        }
+
+        .s3-header { display: flex; flex-direction: column; gap: 0.2em; }
+
+        .s3-title {
+            font-size: var(--h2-size); font-weight: 800;
+            color: var(--text-primary); line-height: 1.2;
+        }
+
+        .s3-subtitle { font-size: var(--body-size); color: var(--text-secondary); }
+
+        .slide-3-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: clamp(0.8rem, 1.8vw, 1.4rem);
+            align-items: start;
+            max-width: min(70vw, 720px);
+        }
+
+        /* Spreadsheet mock */
+        .spreadsheet {
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1.5px solid #dde5ef;
+            font-size: var(--small-size);
+        }
+
+        .ss-header-row {
+            display: grid; grid-template-columns: 30% 70%;
+            background: #3a7ec1; color: white; font-weight: 700;
+            padding: 0.36em 0.65em; letter-spacing: 0.04em;
+        }
+
+        .ss-row {
+            display: grid; grid-template-columns: 30% 70%;
+            padding: 0.28em 0.65em;
+            border-bottom: 1px solid #eef1f5;
+            align-items: center; gap: 0.3em;
+        }
+
+        .ss-row.blue-attr { background: #deeefb; }
+
+        .ss-col-name {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 700; font-size: 0.88em;
+            color: #1565c0;
+            display: flex; align-items: center; gap: 4px;
+        }
+
+        .blue-dot {
+            display: inline-block; width: 6px; height: 6px;
+            border-radius: 50%; background: var(--accent-blue); flex-shrink: 0;
+        }
+
+        .ss-col-desc { color: var(--text-secondary); line-height: 1.3; }
+
+        /* =============================================
+           INLINE EDIT MODE
+           ============================================= */
+        .edit-hotzone {
+            position: fixed; top: 0; left: 0;
+            width: 80px; height: 80px;
+            z-index: 10000; cursor: pointer;
+        }
+
+        .edit-toggle {
+            position: fixed; top: 14px; left: 14px;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease; z-index: 10001;
+            background: white; border: 2px solid var(--accent-blue);
+            color: var(--accent-blue); font-size: 13px; font-weight: 700;
+            padding: 6px 14px; border-radius: 8px;
+            cursor: pointer; font-family: var(--font-main);
+        }
+
+        .edit-toggle.show,
+        .edit-toggle.active { opacity: 1; pointer-events: auto; }
+
+        .edit-mode-badge {
+            position: fixed; top: 12px; right: 50px;
+            background: var(--accent-blue); color: white;
+            font-family: var(--font-main); font-size: 11px; font-weight: 700;
+            padding: 4px 12px; border-radius: 100px;
+            display: none; z-index: 10001;
+        }
+
+        body.editing .edit-mode-badge { display: block; }
+
+        [contenteditable="true"] {
+            outline: 2px dashed var(--accent-blue);
+            outline-offset: 3px; border-radius: 4px;
+            cursor: text; min-width: 1em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-bar" id="progressBar"></div>
+    <nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+    <div class="edit-hotzone" id="editHotzone"></div>
+    <button class="edit-toggle" id="editToggle" title="Toggle edit mode (E)">✏️ Edit</button>
+    <div class="edit-mode-badge">Edit mode — click any text to edit</div>
+
+
+    <!-- ============================================================
+         SLIDE 1 — OVERVIEW (4 steps, 2×2 grid)
+         ============================================================ -->
+    <section class="slide slide-1" id="slide-1" aria-label="Overview">
+
+        <div class="pill-stack decorative" aria-hidden="true">
+            <div class="pill"></div><div class="pill"></div><div class="pill"></div>
+            <div class="pill"></div><div class="pill"></div>
+        </div>
+
+        <div class="slide-content">
+            <div class="s1-inner">
+
+                <span class="tag-badge reveal">GMC Product Optimisation</span>
+                <h1 class="page-title reveal">What You Need to Prepare</h1>
+                <p class="page-subtitle reveal">Get these ready before we run the optimisation tool — no workflow knowledge needed</p>
+
+                <div class="steps-row reveal">
+
+                    <!-- Step 1 — Brand Onboarding Form -->
+                    <div class="step-card">
+                        <div class="step-bg-num" aria-hidden="true">01</div>
+                        <div class="step-icon">📝</div>
+                        <div class="step-label">Step 1</div>
+                        <div class="step-title">Fill in the Brand Onboarding Form</div>
+                        <p class="step-desc">
+                            Register the brand by filling in a short form — brand name, industry, location, positioning, and title rules. See Slide 2 for guidance on each field.
+                        </p>
+                        <a class="step-link"
+                           href="https://sparro-au.app.n8n.cloud/form/c2e462d3-975f-4670-a24e-0c783cb2d8da"
+                           target="_blank" rel="noopener">
+                            Open Form →
+                        </a>
+                        <a class="step-link" style="background: #f0f5fb; color: var(--text-secondary);"
+                           href="https://docs.google.com/spreadsheets/d/1FlVmUOuGBm3M1ebwdWjGuzqMYMF0qASaBmlMbCPRAIo/edit?gid=0#gid=0"
+                           target="_blank" rel="noopener">
+                            Update Registry →
+                        </a>
+                    </div>
+
+                    <!-- Step 2 — Export from GMC -->
+                    <div class="step-card">
+                        <div class="step-bg-num" aria-hidden="true">02</div>
+                        <div class="step-icon">📥</div>
+                        <div class="step-label">Step 2</div>
+                        <div class="step-title">Export from Google Merchant Center</div>
+                        <p class="step-desc">
+                            In your GMC account, go to <strong>Products → All products</strong> and download your product feed as a TSV or CSV file. This is your raw product data.
+                        </p>
+                    </div>
+
+                    <!-- Step 3 — Open product template -->
+                    <div class="step-card">
+                        <div class="step-bg-num" aria-hidden="true">03</div>
+                        <div class="step-icon">📋</div>
+                        <div class="step-label">Step 3</div>
+                        <div class="step-title">Open the Product Template</div>
+                        <p class="step-desc">
+                            Copy your product data into the shared Google Sheet template. The template shows you exactly which columns to fill in — they're highlighted in blue.
+                        </p>
+                        <a class="step-link"
+                           href="https://docs.google.com/spreadsheets/d/1pd2Pg5W03ipkaM_Kcs518nNHIIwEVeYxgOeKEgUTLP0/edit?gid=933953342#gid=933953342"
+                           target="_blank" rel="noopener">
+                            Open Template →
+                        </a>
+                    </div>
+
+                    <!-- Step 4 — Fill in blue columns -->
+                    <div class="step-card">
+                        <div class="step-bg-num" aria-hidden="true">04</div>
+                        <div class="step-icon">🔵</div>
+                        <div class="step-label">Step 4</div>
+                        <div class="step-title">Fill in the Blue Columns</div>
+                        <p class="step-desc">
+                            Only the blue highlighted columns need to be filled in. Column names must match exactly. See Slide 3 for the full column guide.
+                        </p>
+                    </div>
+
+                </div>
+
+                <p class="handoff-note reveal">
+                    Once your form and sheet are ready, share the sheet link — we'll handle the rest ✅
+                </p>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ============================================================
+         SLIDE 2 — BRAND ONBOARDING FORM
+         ============================================================ -->
+    <section class="slide slide-2" id="slide-2" aria-label="Brand onboarding form">
+
+        <div class="pill-stack decorative" aria-hidden="true">
+            <div class="pill"></div><div class="pill"></div><div class="pill"></div>
+            <div class="pill"></div><div class="pill"></div>
+        </div>
+
+        <div class="slide-content">
+            <div class="s2-inner">
+
+                <!-- Header + CTA -->
+                <div class="s2-header reveal">
+                    <h2 class="s2-title">Step 1 — Brand Onboarding Form</h2>
+                    <p class="s2-subtitle">Fill this in once per brand. It tells the tool how to write titles and descriptions for this brand.</p>
+                    <div style="margin-top: clamp(0.3rem, 0.6vw, 0.5rem);">
+                        <a class="form-cta"
+                           href="https://sparro-au.app.n8n.cloud/form/c2e462d3-975f-4670-a24e-0c783cb2d8da"
+                           target="_blank" rel="noopener">
+                            📝 Open Brand Onboarding Form
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Two columns: form fields + tips -->
+                <div class="slide-2-grid">
+
+                    <!-- LEFT: Form fields -->
+                    <div class="panel reveal">
+                        <div class="panel-heading">What the Form Asks</div>
+                        <div class="field-list">
+
+                            <div class="field-row field-required">
+                                <span class="field-icon">🏷️</span>
+                                <span class="field-name">Brand Name</span>
+                                <span class="field-hint">e.g. La Mer, Clinique, Kulanikinis</span>
+                            </div>
+
+                            <div class="field-row field-required">
+                                <span class="field-icon">🧴</span>
+                                <span class="field-name">Industry</span>
+                                <span class="field-hint">e.g. Skincare, Haircare, Footwear</span>
+                            </div>
+
+                            <div class="field-row field-required">
+                                <span class="field-icon">📍</span>
+                                <span class="field-name">Target Location</span>
+                                <span class="field-hint">e.g. Australia, United States — used for keyword volume data</span>
+                            </div>
+
+                            <div class="field-row field-required">
+                                <span class="field-icon">✍️</span>
+                                <span class="field-name">Brand Positioning</span>
+                                <span class="field-hint">1–2 sentences on what the brand is and who it's for</span>
+                            </div>
+
+                            <div class="field-row field-required">
+                                <span class="field-icon">🔢</span>
+                                <span class="field-name">Title Structure</span>
+                                <span class="field-hint">Order of elements, e.g. Brand + Product Name + Key Benefit + Type + Size</span>
+                            </div>
+
+                            <div class="field-row field-optional">
+                                <span class="field-icon">📌</span>
+                                <span class="field-name">Special Rules</span>
+                                <span class="field-hint">Optional — one rule per line, e.g. "Never use the word 'luxury'"</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: Tips -->
+                    <div class="panel reveal">
+                        <div class="panel-heading">Tips for Tricky Fields</div>
+                        <div class="tip-rows">
+
+                            <div class="tip-row info">
+                                <span class="tip-icon">💡</span>
+                                <div class="tip-body">
+                                    <strong>Brand Positioning</strong>
+                                    <span>Search the brand name in ChatGPT or Perplexity in AI search mode — copy the summary as your positioning.</span>
+                                </div>
+                            </div>
+
+                            <div class="tip-row info">
+                                <span class="tip-icon">🔢</span>
+                                <div class="tip-body">
+                                    <strong>Title Structure</strong>
+                                    <span>Define the order of what goes in the title. Include "Size (if relevant)" at the end for variant products.</span>
+                                </div>
+                            </div>
+
+                            <div class="tip-row neutral">
+                                <span class="tip-icon">📌</span>
+                                <div class="tip-body">
+                                    <strong>Special Rules</strong>
+                                    <span>Add any brand-specific restrictions here. These are injected directly into the AI prompt — be specific.</span>
+                                </div>
+                            </div>
+
+                            <div class="tip-row ok">
+                                <span class="tip-icon">✅</span>
+                                <div class="tip-body">
+                                    <strong>Already registered? Update here instead</strong>
+                                    <span>If the brand was onboarded before, no need to re-submit the form. Edit the brand's row directly in the <a href="https://docs.google.com/spreadsheets/d/1FlVmUOuGBm3M1ebwdWjGuzqMYMF0qASaBmlMbCPRAIo/edit?gid=0#gid=0" target="_blank" rel="noopener" style="color: var(--accent-blue); font-weight: 700;">Brand Registry Sheet →</a></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ============================================================
+         SLIDE 3 — PRODUCT TEMPLATE GUIDE
+         ============================================================ -->
+    <section class="slide slide-3" id="slide-3" aria-label="Product template guide">
+
+        <div class="pill-stack decorative" aria-hidden="true">
+            <div class="pill"></div><div class="pill"></div><div class="pill"></div>
+            <div class="pill"></div><div class="pill"></div>
+        </div>
+
+        <div class="slide-content">
+            <div class="s3-inner">
+
+                <div class="s3-header reveal">
+                    <h2 class="s3-title">Steps 3 & 4 — Inside the Product Template</h2>
+                    <p class="s3-subtitle">The blue columns are the only ones you need to fill in.</p>
+                </div>
+
+                <div class="slide-3-grid">
+
+                    <!-- LEFT: Spreadsheet mock -->
+                    <div class="panel reveal">
+                        <div class="panel-heading">Required Columns (blue highlighted)</div>
+                        <p class="panel-note">Copy-paste column names from the template — spelling and spacing matter</p>
+                        <div class="spreadsheet" role="table" aria-label="Required columns">
+                            <div class="ss-header-row" role="row">
+                                <span role="columnheader">Column name</span>
+                                <span role="columnheader">What to fill in</span>
+                            </div>
+                            <div class="ss-row blue-attr" role="row">
+                                <span class="ss-col-name" role="cell"><span class="blue-dot"></span>id</span>
+                                <span class="ss-col-desc" role="cell">Your product ID from GMC</span>
+                            </div>
+                            <div class="ss-row blue-attr" role="row">
+                                <span class="ss-col-name" role="cell"><span class="blue-dot"></span>link</span>
+                                <span class="ss-col-desc" role="cell">Full product page URL</span>
+                            </div>
+                            <div class="ss-row blue-attr" role="row">
+                                <span class="ss-col-name" role="cell"><span class="blue-dot"></span>title</span>
+                                <span class="ss-col-desc" role="cell">Current product title (before optimisation)</span>
+                            </div>
+                            <div class="ss-row blue-attr" role="row">
+                                <span class="ss-col-name" role="cell"><span class="blue-dot"></span>description</span>
+                                <span class="ss-col-desc" role="cell">Current product description</span>
+                            </div>
+                            <div class="ss-row blue-attr" role="row">
+                                <span class="ss-col-name" role="cell"><span class="blue-dot"></span>item group id</span>
+                                <span class="ss-col-desc" role="cell">Groups variants — same value for all sizes/shades of the same product</span>
+                            </div>
+                            <div class="ss-row blue-attr" role="row">
+                                <span class="ss-col-name" role="cell"><span class="blue-dot"></span>Column F</span>
+                                <span class="ss-col-desc" role="cell">Product details — header name varies by brand (e.g. "Product DETAILS", "What It Is")</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ============================================================
+         JAVASCRIPT — Navigation + Inline Editor
+         ============================================================ -->
+    <script>
+        /* =============================================
+           SLIDE PRESENTATION CONTROLLER
+           ============================================= */
+        class SlidePresentation {
+            constructor() {
+                this.slides  = Array.from(document.querySelectorAll('.slide'));
+                this.total   = this.slides.length;
+                this.current = 0;
+
+                this.setupObserver();
+                this.setupKeyboard();
+                this.setupTouch();
+                this.setupNavDots();
+
+                // Trigger first slide immediately
+                this.slides[0].classList.add('visible');
+            }
+
+            setupObserver() {
+                const obs = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            this.current = this.slides.indexOf(entry.target);
+                            this.updateDots();
+                            this.updateProgress();
+                        }
+                    });
+                }, { threshold: 0.5 });
+
+                this.slides.forEach(s => obs.observe(s));
+            }
+
+            setupKeyboard() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.target.getAttribute('contenteditable')) return;
+                    const next = ['ArrowDown', 'ArrowRight', ' ', 'PageDown'];
+                    const prev = ['ArrowUp', 'ArrowLeft', 'PageUp'];
+                    if (next.includes(e.key)) { e.preventDefault(); this.goTo(this.current + 1); }
+                    else if (prev.includes(e.key)) { e.preventDefault(); this.goTo(this.current - 1); }
+                });
+            }
+
+            setupTouch() {
+                let startY = 0;
+                document.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, { passive: true });
+                document.addEventListener('touchend', e => {
+                    const delta = startY - e.changedTouches[0].clientY;
+                    if (Math.abs(delta) > 60) this.goTo(delta > 0 ? this.current + 1 : this.current - 1);
+                }, { passive: true });
+            }
+
+            goTo(idx) {
+                if (idx < 0 || idx >= this.total) return;
+                this.slides[idx].scrollIntoView({ behavior: 'smooth' });
+            }
+
+            setupNavDots() {
+                const nav = document.getElementById('navDots');
+                this.slides.forEach((_, i) => {
+                    const dot = document.createElement('button');
+                    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+                    dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                    dot.addEventListener('click', () => this.goTo(i));
+                    nav.appendChild(dot);
+                });
+            }
+
+            updateDots() {
+                document.querySelectorAll('.nav-dot').forEach((d, i) => {
+                    d.classList.toggle('active', i === this.current);
+                });
+            }
+
+            updateProgress() {
+                const pct = this.total === 1 ? 100 : (this.current / (this.total - 1)) * 100;
+                document.getElementById('progressBar').style.width = pct + '%';
+            }
+        }
+
+        /* =============================================
+           INLINE EDITOR
+           Hover top-left corner or press E to reveal
+           ============================================= */
+        class InlineEditor {
+            constructor() {
+                this.isActive   = false;
+                this.storageKey = 'gmc-prep-guide-v2';
+                this.editables  = [];
+                this.loadSaved();
+            }
+
+            toggleEditMode() {
+                this.isActive = !this.isActive;
+                document.body.classList.toggle('editing', this.isActive);
+
+                const btn = document.getElementById('editToggle');
+                btn.textContent = this.isActive ? '💾 Save & Exit' : '✏️ Edit';
+                btn.classList.toggle('active', this.isActive);
+
+                if (this.isActive) { this.enable(); }
+                else { this.disable(); this.save(); }
+            }
+
+            enable() {
+                const selectors = [
+                    '.page-title', '.page-subtitle', '.tag-badge', '.handoff-note',
+                    '.step-label', '.step-title', '.step-desc',
+                    '.s2-title', '.s2-subtitle', '.s3-title', '.s3-subtitle',
+                    '.panel-heading', '.panel-note',
+                    '.field-name', '.field-hint',
+                    '.tip-body strong', '.tip-body span',
+                    '.ss-col-desc'
+                ];
+                this.editables = [];
+                selectors.forEach(sel => {
+                    document.querySelectorAll(sel).forEach((el, i) => {
+                        el.setAttribute('contenteditable', 'true');
+                        el.dataset.editId = sel + '_' + i;
+                        this.editables.push(el);
+                    });
+                });
+            }
+
+            disable() {
+                this.editables.forEach(el => el.removeAttribute('contenteditable'));
+            }
+
+            save() {
+                const data = {};
+                this.editables.forEach(el => {
+                    if (el.dataset.editId) data[el.dataset.editId] = el.innerHTML;
+                });
+                localStorage.setItem(this.storageKey, JSON.stringify(data));
+            }
+
+            loadSaved() {
+                const raw = localStorage.getItem(this.storageKey);
+                if (!raw) return;
+                try {
+                    const data = JSON.parse(raw);
+                    requestAnimationFrame(() => {
+                        const selectors = [
+                            '.page-title', '.page-subtitle', '.tag-badge', '.handoff-note',
+                            '.step-label', '.step-title', '.step-desc',
+                            '.s2-title', '.s2-subtitle', '.s3-title', '.s3-subtitle',
+                            '.panel-heading', '.panel-note',
+                            '.field-name', '.field-hint',
+                            '.tip-body strong', '.tip-body span',
+                            '.ss-col-desc'
+                        ];
+                        selectors.forEach(sel => {
+                            document.querySelectorAll(sel).forEach((el, i) => {
+                                const key = sel + '_' + i;
+                                if (data[key] !== undefined) el.innerHTML = data[key];
+                            });
+                        });
+                    });
+                } catch (err) { /* ignore corrupted storage */ }
+            }
+        }
+
+        /* Boot */
+        const presentation = new SlidePresentation();
+        const editor       = new InlineEditor();
+
+        /* Edit button hover (JS-based — CSS ~ fails with pointer-events: none) */
+        const hotzone    = document.getElementById('editHotzone');
+        const editToggle = document.getElementById('editToggle');
+        let hideTimeout  = null;
+
+        const showToggle = () => { clearTimeout(hideTimeout); editToggle.classList.add('show'); };
+        const schedHide  = () => {
+            hideTimeout = setTimeout(() => {
+                if (!editor.isActive) editToggle.classList.remove('show');
+            }, 400);
+        };
+
+        hotzone.addEventListener('mouseenter', showToggle);
+        hotzone.addEventListener('mouseleave', schedHide);
+        hotzone.addEventListener('click', () => editor.toggleEditMode());
+
+        editToggle.addEventListener('mouseenter', showToggle);
+        editToggle.addEventListener('mouseleave', schedHide);
+        editToggle.addEventListener('click', () => editor.toggleEditMode());
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.key === 'e' || e.key === 'E') && !e.target.getAttribute('contenteditable')) {
+                editor.toggleEditMode();
+            }
+        });
+    </script>
+
+</body>
+</html>
