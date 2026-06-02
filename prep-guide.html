@@ -17,6 +17,7 @@
             --bg-primary:    #cddce9;
             --bg-slide2:     #d4e3ee;
             --bg-slide3:     #bdd1e2;
+            --bg-slide4:     #c8daea;
             --card-bg:       #faf9f7;
             --text-primary:  #18202e;
             --text-secondary:#596579;
@@ -488,6 +489,81 @@
         .ss-col-desc { color: var(--text-secondary); line-height: 1.3; }
 
         /* =============================================
+           SLIDE 4 — RUN IT YOURSELF
+           ============================================= */
+        .slide-4 { background: var(--bg-slide4); }
+
+        .s4-inner {
+            display: flex; flex-direction: column;
+            gap: var(--content-gap);
+            max-width: min(92vw, 1080px); margin: 0 auto; width: 100%;
+        }
+
+        .s4-header { display: flex; flex-direction: column; gap: 0.2em; }
+
+        .s4-title {
+            font-size: var(--h2-size); font-weight: 800;
+            color: var(--text-primary); line-height: 1.2;
+        }
+
+        .s4-subtitle { font-size: var(--body-size); color: var(--text-secondary); }
+
+        /* Vertical numbered run flow */
+        .run-steps {
+            display: flex; flex-direction: column;
+            gap: clamp(0.5rem, 1.1vw, 0.85rem);
+        }
+
+        .run-step {
+            display: flex; align-items: flex-start; gap: clamp(0.6rem, 1.2vw, 1rem);
+            background: var(--card-bg);
+            border-radius: var(--radius-card);
+            padding: clamp(0.65rem, 1.4vw, 1.05rem) clamp(0.8rem, 1.6vw, 1.2rem);
+            box-shadow: 0 4px 22px rgba(0,0,0,0.07);
+        }
+
+        .run-num {
+            flex-shrink: 0;
+            width: clamp(1.55rem, 2.8vw, 2rem); height: clamp(1.55rem, 2.8vw, 2rem);
+            border-radius: 50%;
+            background: var(--accent-light); color: var(--accent-blue);
+            font-size: var(--small-size); font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .run-step-body { display: flex; flex-direction: column; gap: 0.18em; flex: 1; }
+
+        .run-step-title {
+            font-size: var(--h3-size); font-weight: 700;
+            color: var(--text-primary); line-height: 1.25;
+            display: flex; align-items: center; gap: 0.45em; flex-wrap: wrap;
+        }
+
+        .run-step-desc {
+            font-size: var(--small-size); color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Ownership pills on each run step */
+        .needs-us, .self-serve {
+            font-size: var(--micro-size); font-weight: 700;
+            letter-spacing: 0.06em; text-transform: uppercase;
+            padding: 0.15em 0.7em; border-radius: 100px;
+        }
+        .needs-us   { color: #b06a00; background: #fff1d6; }
+        .self-serve { color: #2c8a63; background: #e4f5ed; }
+
+        /* Bottom highlight */
+        .run-callout {
+            background: var(--accent-light);
+            border-radius: var(--radius-card);
+            padding: clamp(0.6rem, 1.3vw, 1rem) clamp(0.9rem, 1.8vw, 1.3rem);
+            font-size: var(--small-size); color: var(--text-secondary);
+            line-height: 1.5; text-align: center;
+        }
+        .run-callout strong { color: var(--text-primary); }
+
+        /* =============================================
            INLINE EDIT MODE
            ============================================= */
         .edit-hotzone {
@@ -550,7 +626,7 @@
 
                 <span class="tag-badge reveal">GMC Product Optimisation</span>
                 <h1 class="page-title reveal">What You Need to Prepare</h1>
-                <p class="page-subtitle reveal">Get these ready before we run the optimisation tool — no workflow knowledge needed</p>
+                <p class="page-subtitle reveal">Get these ready, then run the optimisation tool yourself, no workflow knowledge needed</p>
 
                 <div class="steps-row reveal">
 
@@ -616,7 +692,7 @@
                 </div>
 
                 <p class="handoff-note reveal">
-                    Once your form and sheet are ready, share the sheet link — we'll handle the rest ✅
+                    Once your sheet is ready, tell us for a one-time crawl, then generate and refine the output yourself. See Step 5 ✅
                 </p>
 
             </div>
@@ -809,6 +885,75 @@
 
 
     <!-- ============================================================
+         SLIDE 4 — RUN IT YOURSELF
+         ============================================================ -->
+    <section class="slide slide-4" id="slide-4" aria-label="Run it yourself">
+
+        <div class="pill-stack decorative" aria-hidden="true">
+            <div class="pill"></div><div class="pill"></div><div class="pill"></div>
+            <div class="pill"></div><div class="pill"></div>
+        </div>
+
+        <div class="slide-content">
+            <div class="s4-inner">
+
+                <div class="s4-header reveal">
+                    <h2 class="s4-title">Step 5: Run It Yourself</h2>
+                    <p class="s4-subtitle">Once your sheet is ready, you generate and refine the titles and descriptions yourself. No waiting on us between rounds.</p>
+                </div>
+
+                <div class="run-steps reveal">
+
+                    <!-- Run sub-step 1: crawl (needs us) -->
+                    <div class="run-step">
+                        <div class="run-num">1</div>
+                        <div class="run-step-body">
+                            <div class="run-step-title">🕷️ Ask us for a one-time crawl <span class="needs-us">Needs us</span></div>
+                            <p class="run-step-desc">
+                                Let us know your sheet is ready. We run a quick crawl of your product pages to pull in the product details the tool needs. This happens once per sheet, after that you're fully self-serve.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Run sub-step 2: click Run -->
+                    <div class="run-step">
+                        <div class="run-num">2</div>
+                        <div class="run-step-body">
+                            <div class="run-step-title">▶️ Click Run in the Brand Registry sheet <span class="self-serve">Self-serve</span></div>
+                            <p class="run-step-desc">
+                                Open the Brand Registry sheet and click the <strong>Run</strong> button. The tool generates optimised titles and descriptions and writes them straight back to your sheet, no need to message us.
+                            </p>
+                            <a class="step-link"
+                               href="https://docs.google.com/spreadsheets/d/1FlVmUOuGBm3M1ebwdWjGuzqMYMF0qASaBmlMbCPRAIo/edit?gid=0#gid=0"
+                               target="_blank" rel="noopener">
+                                Open Brand Registry →
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Run sub-step 3: iterate -->
+                    <div class="run-step">
+                        <div class="run-num">3</div>
+                        <div class="run-step-body">
+                            <div class="run-step-title">🔁 Not happy? Tweak the rules and run again <span class="self-serve">Self-serve</span></div>
+                            <p class="run-step-desc">
+                                Edit the prompt and special rules for the brand in the Registry, then click Run again. Repeat as many times as you like until the titles and descriptions are exactly right.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <p class="run-callout reveal">
+                    <strong>Steps 2 and 3 are fully self-serve.</strong> Iterate on your own schedule. The only step that needs us is the one-time crawl. 🎉
+                </p>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ============================================================
          JAVASCRIPT — Navigation + Inline Editor
          ============================================================ -->
     <script>
@@ -921,6 +1066,8 @@
                     '.page-title', '.page-subtitle', '.tag-badge', '.handoff-note',
                     '.step-label', '.step-title', '.step-desc',
                     '.s2-title', '.s2-subtitle', '.s3-title', '.s3-subtitle',
+                    '.s4-title', '.s4-subtitle',
+                    '.run-step-title', '.run-step-desc', '.run-callout',
                     '.panel-heading', '.panel-note',
                     '.field-name', '.field-hint',
                     '.tip-body strong', '.tip-body span',
@@ -958,6 +1105,8 @@
                             '.page-title', '.page-subtitle', '.tag-badge', '.handoff-note',
                             '.step-label', '.step-title', '.step-desc',
                             '.s2-title', '.s2-subtitle', '.s3-title', '.s3-subtitle',
+                            '.s4-title', '.s4-subtitle',
+                            '.run-step-title', '.run-step-desc', '.run-callout',
                             '.panel-heading', '.panel-note',
                             '.field-name', '.field-hint',
                             '.tip-body strong', '.tip-body span',
