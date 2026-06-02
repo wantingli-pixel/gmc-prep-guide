@@ -18,6 +18,7 @@
             --bg-slide2:     #d4e3ee;
             --bg-slide3:     #bdd1e2;
             --bg-slide4:     #c8daea;
+            --bg-slide5:     #bccfe2;
             --card-bg:       #faf9f7;
             --text-primary:  #18202e;
             --text-secondary:#596579;
@@ -564,6 +565,26 @@
         .run-callout strong { color: var(--text-primary); }
 
         /* =============================================
+           SLIDE 5 — RUN CONFIG FORM
+           ============================================= */
+        .slide-5 { background: var(--bg-slide5); }
+
+        .s5-inner {
+            display: flex; flex-direction: column;
+            gap: var(--content-gap);
+            max-width: min(92vw, 1080px); margin: 0 auto; width: 100%;
+        }
+
+        .s5-header { display: flex; flex-direction: column; gap: 0.2em; }
+
+        .s5-title {
+            font-size: var(--h2-size); font-weight: 800;
+            color: var(--text-primary); line-height: 1.2;
+        }
+
+        .s5-subtitle { font-size: var(--body-size); color: var(--text-secondary); }
+
+        /* =============================================
            INLINE EDIT MODE
            ============================================= */
         .edit-hotzone {
@@ -921,7 +942,7 @@
                         <div class="run-step-body">
                             <div class="run-step-title">▶️ Click Run in the Brand Registry sheet <span class="self-serve">Self-serve</span></div>
                             <p class="run-step-desc">
-                                Open the Brand Registry sheet and click the <strong>Run</strong> button. The tool generates optimised titles and descriptions and writes them straight back to your sheet, no need to message us.
+                                Open the Brand Registry sheet and click the <strong>Run</strong> button. A short config form opens (see next slide). Fill it in, submit, and the tool writes optimised titles and descriptions straight back to your sheet. No need to message us.
                             </p>
                             <a class="step-link"
                                href="https://docs.google.com/spreadsheets/d/1FlVmUOuGBm3M1ebwdWjGuzqMYMF0qASaBmlMbCPRAIo/edit?gid=0#gid=0"
@@ -947,6 +968,117 @@
                 <p class="run-callout reveal">
                     <strong>Steps 2 and 3 are fully self-serve.</strong> Iterate on your own schedule. The only step that needs us is the one-time crawl. 🎉
                 </p>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ============================================================
+         SLIDE 5 — RUN CONFIG FORM
+         ============================================================ -->
+    <section class="slide slide-5" id="slide-5" aria-label="Run config form">
+
+        <div class="pill-stack decorative" aria-hidden="true">
+            <div class="pill"></div><div class="pill"></div><div class="pill"></div>
+            <div class="pill"></div><div class="pill"></div>
+        </div>
+
+        <div class="slide-content">
+            <div class="s5-inner">
+
+                <div class="s5-header reveal">
+                    <h2 class="s5-title">The Run Config Form</h2>
+                    <p class="s5-subtitle">Clicking Run opens a short form. Here's what each field means.</p>
+                </div>
+
+                <div class="slide-2-grid">
+
+                    <!-- LEFT: form fields -->
+                    <div class="panel reveal">
+                        <div class="panel-heading">What the Form Asks</div>
+                        <div class="field-list">
+
+                            <div class="field-row field-required">
+                                <span class="field-icon">🏷️</span>
+                                <span class="field-name">brand_name</span>
+                                <span class="field-hint">The brand, exactly as registered in the Brand Registry. e.g. Ralph Lauren</span>
+                            </div>
+
+                            <div class="field-row field-required">
+                                <span class="field-icon">🆔</span>
+                                <span class="field-name">sheet_id</span>
+                                <span class="field-hint">Your Google Sheet ID: the long code in the sheet URL, between /d/ and /edit</span>
+                            </div>
+
+                            <div class="field-row field-required">
+                                <span class="field-icon">📑</span>
+                                <span class="field-name">sheet_name</span>
+                                <span class="field-hint">The tab to read from, e.g. test</span>
+                            </div>
+
+                            <div class="field-row field-optional">
+                                <span class="field-icon">🔢</span>
+                                <span class="field-name">limit</span>
+                                <span class="field-hint">How many products to process. 0 or blank means all. Use a small number to test first.</span>
+                            </div>
+
+                            <div class="field-row field-optional">
+                                <span class="field-icon">⬇️</span>
+                                <span class="field-name">start_row</span>
+                                <span class="field-hint">Row to start from, e.g. 2 (row 1 is the header)</span>
+                            </div>
+
+                            <div class="field-row field-optional">
+                                <span class="field-icon">⬆️</span>
+                                <span class="field-name">end_row</span>
+                                <span class="field-hint">Row to stop at. Leave blank to run to the end.</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: tips -->
+                    <div class="panel reveal">
+                        <div class="panel-heading">Tips</div>
+                        <div class="tip-rows">
+
+                            <div class="tip-row ok">
+                                <span class="tip-icon">🧪</span>
+                                <div class="tip-body">
+                                    <strong>Test on a few first</strong>
+                                    <span>Set limit to 5, or a small start_row / end_row range, before running the whole sheet.</span>
+                                </div>
+                            </div>
+
+                            <div class="tip-row info">
+                                <span class="tip-icon">🆔</span>
+                                <div class="tip-body">
+                                    <strong>Finding the sheet ID</strong>
+                                    <span>In docs.google.com/spreadsheets/d/SHEET_ID/edit, copy the SHEET_ID part.</span>
+                                </div>
+                            </div>
+
+                            <div class="tip-row warn">
+                                <span class="tip-icon">🏷️</span>
+                                <div class="tip-body">
+                                    <strong>Match the brand name</strong>
+                                    <span>It must match a row in the Brand Registry, or the tool won't know which rules to apply.</span>
+                                </div>
+                            </div>
+
+                            <div class="tip-row neutral">
+                                <span class="tip-icon">🔁</span>
+                                <div class="tip-body">
+                                    <strong>Re-run any time</strong>
+                                    <span>Not happy with the output? Tweak the brand's rules in the Registry and submit the form again.</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
 
             </div>
         </div>
@@ -1066,7 +1198,7 @@
                     '.page-title', '.page-subtitle', '.tag-badge', '.handoff-note',
                     '.step-label', '.step-title', '.step-desc',
                     '.s2-title', '.s2-subtitle', '.s3-title', '.s3-subtitle',
-                    '.s4-title', '.s4-subtitle',
+                    '.s4-title', '.s4-subtitle', '.s5-title', '.s5-subtitle',
                     '.run-step-title', '.run-step-desc', '.run-callout',
                     '.panel-heading', '.panel-note',
                     '.field-name', '.field-hint',
@@ -1105,7 +1237,7 @@
                             '.page-title', '.page-subtitle', '.tag-badge', '.handoff-note',
                             '.step-label', '.step-title', '.step-desc',
                             '.s2-title', '.s2-subtitle', '.s3-title', '.s3-subtitle',
-                            '.s4-title', '.s4-subtitle',
+                            '.s4-title', '.s4-subtitle', '.s5-title', '.s5-subtitle',
                             '.run-step-title', '.run-step-desc', '.run-callout',
                             '.panel-heading', '.panel-note',
                             '.field-name', '.field-hint',
