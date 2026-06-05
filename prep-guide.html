@@ -19,6 +19,7 @@
             --bg-slide3:     #bdd1e2;
             --bg-slide4:     #c8daea;
             --bg-slide5:     #bccfe2;
+            --bg-slide6:     #c3d4e4;
             --card-bg:       #faf9f7;
             --text-primary:  #18202e;
             --text-secondary:#596579;
@@ -281,10 +282,10 @@
             max-width: min(92vw, 1080px); margin: 0 auto; width: 100%;
         }
 
-        /* 2×2 step grid */
+        /* step grid — 3 across (5 cards = 3 + 2) */
         .steps-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: clamp(0.6rem, 1.5vw, 1.1rem);
             width: 100%;
         }
@@ -310,6 +311,7 @@
         .step-card:nth-child(2) .step-bg-num { color: var(--pill-2); opacity: 0.38; }
         .step-card:nth-child(3) .step-bg-num { color: var(--pill-3); opacity: 0.38; }
         .step-card:nth-child(4) .step-bg-num { color: var(--pill-4); opacity: 0.38; }
+        .step-card:nth-child(5) .step-bg-num { color: var(--pill-5); opacity: 0.38; }
 
         .step-icon  { font-size: clamp(1.1rem, 2.2vw, 1.6rem); line-height: 1; }
 
@@ -585,6 +587,49 @@
         .s5-subtitle { font-size: var(--body-size); color: var(--text-secondary); }
 
         /* =============================================
+           SLIDE 6 — WRITE THE PROMPT
+           ============================================= */
+        .slide-6 { background: var(--bg-slide6); }
+
+        .s6-inner {
+            display: flex; flex-direction: column;
+            gap: var(--content-gap);
+            max-width: min(92vw, 1080px); margin: 0 auto; width: 100%;
+        }
+
+        .s6-header { display: flex; flex-direction: column; gap: 0.2em; }
+
+        .s6-title {
+            font-size: var(--h2-size); font-weight: 800;
+            color: var(--text-primary); line-height: 1.2;
+        }
+
+        .s6-subtitle { font-size: var(--body-size); color: var(--text-secondary); }
+
+        /* Two GMC screenshots side by side */
+        .prompt-shots {
+            display: flex; gap: clamp(0.6rem, 1.5vw, 1.1rem); width: 100%;
+        }
+
+        .prompt-shot {
+            flex: 1; margin: 0;
+            display: flex; flex-direction: column; gap: 0.35em;
+        }
+
+        .prompt-shot img {
+            width: 100%; border-radius: var(--radius-sm);
+            box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+            border: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .prompt-shot figcaption {
+            font-size: var(--micro-size); color: var(--text-secondary);
+            text-align: center; line-height: 1.4;
+        }
+
+        @media (max-width: 760px) { .prompt-shots { flex-direction: column; } }
+
+        /* =============================================
            INLINE EDIT MODE
            ============================================= */
         .edit-hotzone {
@@ -710,10 +755,21 @@
                         </p>
                     </div>
 
+                    <!-- Step 5 — Write the prompt -->
+                    <div class="step-card">
+                        <div class="step-bg-num" aria-hidden="true">05</div>
+                        <div class="step-icon">✍️</div>
+                        <div class="step-label">Step 5</div>
+                        <div class="step-title">Write the Prompt</div>
+                        <p class="step-desc">
+                            Sharpen the prompt using GMC's own "missing details" list, so the tool covers what shoppers actually search for. See Slide 4 for the shortcut.
+                        </p>
+                    </div>
+
                 </div>
 
                 <p class="handoff-note reveal">
-                    Once your sheet is ready, tell us for a one-time crawl, then generate and refine the output yourself. See Step 5 ✅
+                    Once your sheet is ready, tell us for a one-time crawl, then generate and refine the output yourself. See Step 6 ✅
                 </p>
 
             </div>
@@ -906,6 +962,81 @@
 
 
     <!-- ============================================================
+         SLIDE — STEP 5: WRITE THE PROMPT
+         ============================================================ -->
+    <section class="slide slide-6" id="slide-prompt" aria-label="Write the prompt">
+
+        <div class="pill-stack decorative" aria-hidden="true">
+            <div class="pill"></div><div class="pill"></div><div class="pill"></div>
+            <div class="pill"></div><div class="pill"></div>
+        </div>
+
+        <div class="slide-content">
+            <div class="s6-inner">
+
+                <div class="s6-header reveal">
+                    <h2 class="s6-title">Step 5 — Write the Prompt</h2>
+                    <p class="s6-subtitle">A 2-minute shortcut to sharper output: let Google Merchant Center tell you exactly which details to add.</p>
+                </div>
+
+                <div class="run-steps reveal">
+
+                    <!-- Sub-step 1: find the data -->
+                    <div class="run-step">
+                        <div class="run-num">1</div>
+                        <div class="run-step-body">
+                            <div class="run-step-title">🔍 Find the data in GMC</div>
+                            <p class="run-step-desc">
+                                In the client's GMC <strong>Overview</strong>, scroll to the bottom and find <strong>"Update descriptions for [category]"</strong>. Click in, then filter by a specific category.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Sub-step 2: copy attributes into prompt -->
+                    <div class="run-step">
+                        <div class="run-num">2</div>
+                        <div class="run-step-body">
+                            <div class="run-step-title">📋 Copy the missing attributes into your prompt</div>
+                            <p class="run-step-desc">
+                                GMC lists the exact details it wants added per category. Drop these straight into the brand's prompt / special rules in the Registry, so the tool includes them where available.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Sub-step 3: keep conversational -->
+                    <div class="run-step">
+                        <div class="run-num">3</div>
+                        <div class="run-step-body">
+                            <div class="run-step-title">✍️ Keep it conversational <span class="self-serve">Important</span></div>
+                            <p class="run-step-desc">
+                                Don't let the description turn into a boring spec list no one searches for. The attributes are a checklist of what to cover, not the wording — keep it natural and easy to read.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <p class="run-callout reveal">
+                    <strong>Example prompt add:</strong> "For Smart TV descriptions, include number of HDMI ports, viewing angle, refresh rate, depth, supported streaming, width, colour, connectivity and weight where available."
+                </p>
+
+                <div class="prompt-shots reveal">
+                    <figure class="prompt-shot">
+                        <img src="img/gmc-overview.png" alt="GMC Overview showing the Update descriptions card">
+                        <figcaption>1. GMC Overview → "Update descriptions for [category]"</figcaption>
+                    </figure>
+                    <figure class="prompt-shot">
+                        <img src="img/gmc-missing-details.png" alt="GMC list of attributes to add to product descriptions">
+                        <figcaption>2. Filter by category → GMC lists the attributes to add</figcaption>
+                    </figure>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ============================================================
          SLIDE 4 — RUN IT YOURSELF
          ============================================================ -->
     <section class="slide slide-4" id="slide-4" aria-label="Run it yourself">
@@ -919,7 +1050,7 @@
             <div class="s4-inner">
 
                 <div class="s4-header reveal">
-                    <h2 class="s4-title">Step 5: Run It Yourself</h2>
+                    <h2 class="s4-title">Step 6: Run It Yourself</h2>
                     <p class="s4-subtitle">Once your sheet is ready, you generate and refine the titles and descriptions yourself. No waiting on us between rounds.</p>
                 </div>
 
@@ -1198,7 +1329,7 @@
                     '.page-title', '.page-subtitle', '.tag-badge', '.handoff-note',
                     '.step-label', '.step-title', '.step-desc',
                     '.s2-title', '.s2-subtitle', '.s3-title', '.s3-subtitle',
-                    '.s4-title', '.s4-subtitle', '.s5-title', '.s5-subtitle',
+                    '.s4-title', '.s4-subtitle', '.s5-title', '.s5-subtitle', '.s6-title', '.s6-subtitle',
                     '.run-step-title', '.run-step-desc', '.run-callout',
                     '.panel-heading', '.panel-note',
                     '.field-name', '.field-hint',
@@ -1237,7 +1368,7 @@
                             '.page-title', '.page-subtitle', '.tag-badge', '.handoff-note',
                             '.step-label', '.step-title', '.step-desc',
                             '.s2-title', '.s2-subtitle', '.s3-title', '.s3-subtitle',
-                            '.s4-title', '.s4-subtitle', '.s5-title', '.s5-subtitle',
+                            '.s4-title', '.s4-subtitle', '.s5-title', '.s5-subtitle', '.s6-title', '.s6-subtitle',
                             '.run-step-title', '.run-step-desc', '.run-callout',
                             '.panel-heading', '.panel-note',
                             '.field-name', '.field-hint',
