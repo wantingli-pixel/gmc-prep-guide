@@ -312,6 +312,7 @@
         .step-card:nth-child(3) .step-bg-num { color: var(--pill-3); opacity: 0.38; }
         .step-card:nth-child(4) .step-bg-num { color: var(--pill-4); opacity: 0.38; }
         .step-card:nth-child(5) .step-bg-num { color: var(--pill-5); opacity: 0.38; }
+        .step-card:nth-child(6) .step-bg-num { color: var(--accent-mint); opacity: 0.38; }
 
         .step-icon  { font-size: clamp(1.1rem, 2.2vw, 1.6rem); line-height: 1; }
 
@@ -762,7 +763,18 @@
                         <div class="step-label">Step 5</div>
                         <div class="step-title">Write the Prompt</div>
                         <p class="step-desc">
-                            Sharpen the prompt using GMC's own "missing details" list, so the tool covers what shoppers actually search for. See Slide 6 for the shortcut.
+                            Sharpen the prompt using GMC's own "missing details" list, so the tool covers what shoppers actually search for. See Slide 4 for the shortcut.
+                        </p>
+                    </div>
+
+                    <!-- Step 6 — Run it yourself -->
+                    <div class="step-card">
+                        <div class="step-bg-num" aria-hidden="true">06</div>
+                        <div class="step-icon">▶️</div>
+                        <div class="step-label">Step 6</div>
+                        <div class="step-title">Run It Yourself</div>
+                        <p class="step-desc">
+                            Ask us for the one-time crawl, then click Run in the Brand Registry and iterate until the output is right. See Slide 5 for the full flow.
                         </p>
                     </div>
 
@@ -875,7 +887,7 @@
                                 <span class="tip-icon">📌</span>
                                 <div class="tip-body">
                                     <strong>Special Rules</strong>
-                                    <span>Add any brand-specific restrictions here. These are injected directly into the AI prompt — be specific. See the detailed guide on how to write the rules in Slide 6.</span>
+                                    <span>Add any brand-specific restrictions here. These are injected directly into the AI prompt — be specific. See how to write the rules in Step 5.</span>
                                 </div>
                             </div>
 
@@ -957,6 +969,81 @@
                     </div>
 
 
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ============================================================
+         SLIDE — STEP 5: WRITE THE PROMPT (detailed guide)
+         ============================================================ -->
+    <section class="slide slide-6" id="slide-prompt" aria-label="Write the prompt">
+
+        <div class="pill-stack decorative" aria-hidden="true">
+            <div class="pill"></div><div class="pill"></div><div class="pill"></div>
+            <div class="pill"></div><div class="pill"></div>
+        </div>
+
+        <div class="slide-content">
+            <div class="s6-inner">
+
+                <div class="s6-header reveal">
+                    <h2 class="s6-title">Step 5 — Write the Prompt (Detailed Guide)</h2>
+                    <p class="s6-subtitle">A 2-minute shortcut to sharper output: let Google Merchant Center tell you exactly which details to add to the prompt and special rules.</p>
+                </div>
+
+                <div class="run-steps reveal">
+
+                    <!-- Sub-step 1: find the data -->
+                    <div class="run-step">
+                        <div class="run-num">1</div>
+                        <div class="run-step-body">
+                            <div class="run-step-title">🔍 Find the data in GMC</div>
+                            <p class="run-step-desc">
+                                In the client's GMC <strong>Overview</strong>, scroll to the bottom and find <strong>"Update descriptions for [category]"</strong>. Click in, then filter by a specific category.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Sub-step 2: copy attributes into prompt -->
+                    <div class="run-step">
+                        <div class="run-num">2</div>
+                        <div class="run-step-body">
+                            <div class="run-step-title">📋 Copy the missing attributes into your prompt</div>
+                            <p class="run-step-desc">
+                                GMC lists the exact details it wants added per category. Drop these straight into the brand's prompt / special rules in the Registry, so the tool includes them where available.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Sub-step 3: keep conversational -->
+                    <div class="run-step">
+                        <div class="run-num">3</div>
+                        <div class="run-step-body">
+                            <div class="run-step-title">✍️ Keep it conversational <span class="self-serve">Important</span></div>
+                            <p class="run-step-desc">
+                                Don't let the description turn into a boring spec list no one searches for. The attributes are a checklist of what to cover, not the wording — keep it natural and easy to read.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <p class="run-callout reveal">
+                    <strong>Example prompt add:</strong> "For Smart TV descriptions, include number of HDMI ports, viewing angle, refresh rate, depth, supported streaming, width, colour, connectivity and weight where available."
+                </p>
+
+                <div class="prompt-shots reveal">
+                    <figure class="prompt-shot">
+                        <img src="img/gmc-overview.png" alt="GMC Overview showing the Update descriptions card">
+                        <figcaption>1. GMC Overview → "Update descriptions for [category]"</figcaption>
+                    </figure>
+                    <figure class="prompt-shot">
+                        <img src="img/gmc-missing-details.png" alt="GMC list of attributes to add to product descriptions">
+                        <figcaption>2. Filter by category → GMC lists the attributes to add</figcaption>
+                    </figure>
                 </div>
 
             </div>
@@ -1137,81 +1224,6 @@
                         </div>
                     </div>
 
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-
-    <!-- ============================================================
-         SLIDE 6 — WRITE THE PROMPT (detailed guide)
-         ============================================================ -->
-    <section class="slide slide-6" id="slide-prompt" aria-label="Write the prompt">
-
-        <div class="pill-stack decorative" aria-hidden="true">
-            <div class="pill"></div><div class="pill"></div><div class="pill"></div>
-            <div class="pill"></div><div class="pill"></div>
-        </div>
-
-        <div class="slide-content">
-            <div class="s6-inner">
-
-                <div class="s6-header reveal">
-                    <h2 class="s6-title">Write the Prompt — Detailed Guide</h2>
-                    <p class="s6-subtitle">A 2-minute shortcut to sharper output: let Google Merchant Center tell you exactly which details to add to the prompt and special rules.</p>
-                </div>
-
-                <div class="run-steps reveal">
-
-                    <!-- Sub-step 1: find the data -->
-                    <div class="run-step">
-                        <div class="run-num">1</div>
-                        <div class="run-step-body">
-                            <div class="run-step-title">🔍 Find the data in GMC</div>
-                            <p class="run-step-desc">
-                                In the client's GMC <strong>Overview</strong>, scroll to the bottom and find <strong>"Update descriptions for [category]"</strong>. Click in, then filter by a specific category.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Sub-step 2: copy attributes into prompt -->
-                    <div class="run-step">
-                        <div class="run-num">2</div>
-                        <div class="run-step-body">
-                            <div class="run-step-title">📋 Copy the missing attributes into your prompt</div>
-                            <p class="run-step-desc">
-                                GMC lists the exact details it wants added per category. Drop these straight into the brand's prompt / special rules in the Registry, so the tool includes them where available.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Sub-step 3: keep conversational -->
-                    <div class="run-step">
-                        <div class="run-num">3</div>
-                        <div class="run-step-body">
-                            <div class="run-step-title">✍️ Keep it conversational <span class="self-serve">Important</span></div>
-                            <p class="run-step-desc">
-                                Don't let the description turn into a boring spec list no one searches for. The attributes are a checklist of what to cover, not the wording — keep it natural and easy to read.
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-
-                <p class="run-callout reveal">
-                    <strong>Example prompt add:</strong> "For Smart TV descriptions, include number of HDMI ports, viewing angle, refresh rate, depth, supported streaming, width, colour, connectivity and weight where available."
-                </p>
-
-                <div class="prompt-shots reveal">
-                    <figure class="prompt-shot">
-                        <img src="img/gmc-overview.png" alt="GMC Overview showing the Update descriptions card">
-                        <figcaption>1. GMC Overview → "Update descriptions for [category]"</figcaption>
-                    </figure>
-                    <figure class="prompt-shot">
-                        <img src="img/gmc-missing-details.png" alt="GMC list of attributes to add to product descriptions">
-                        <figcaption>2. Filter by category → GMC lists the attributes to add</figcaption>
-                    </figure>
                 </div>
 
             </div>
